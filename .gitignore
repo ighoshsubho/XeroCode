@@ -1,0 +1,83 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+
+# Dependency directories
+node_modules/
+jspm_packages/
+
+# Build files
+dist/
+build/
+out/
+output/
+build-esm/
+build-cjs/
+dist-esm/
+dist-cjs/
+
+# Editor-specific files
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+*.komodoproject
+*.komodoide
+*.kate-project
+*.kate-cproject
+
+# Others
+*.swp
+*.swo
+*.db
+*.sqlite
+*.sqlite3
+*.svg
+*.DS_Store
+*.env.local
+*.env.development.local
+*.env.test.local
+*.env.production.local
+
+# OS-specific files
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Backups
+*~
+*.bak
+*.backup
+*.save
+
+# MongoDB data directory
+/dbpath/
+
+# Redis dump file
+dump.rdb
+
+# Credentials
+.env
+
+# Compiled binary addons
+node_modules/**/*.node
+
+# Coverage directory used by tools like istanbul
+coverage
+
+# Yarn Integrity file
+.yarn-integrity
+
+# Jest coverage report
+coverage/
+
+# Directory used for temporary storing of artifacts, like build artifacts from CI
+.tmp/
+
+# Next.js build output
+.next/
