@@ -21,4 +21,10 @@ router.get('/auth/google/callback', authController.googleAuthCallback);
 // Callback route for GitHub OAuth
 router.get('/auth/github/callback', authController.githubAuthCallback);
 
+// route for Validating Token
+router.post('/auth/validate', authController.validateToken);
+
+// route for selecting user type
+router.post('/auth/select', authController.selectType); 
+
 module.exports = router;
