@@ -6,6 +6,7 @@ const userSchema = new mongoose.Schema({
   googleId: String,
   githubId: String,
   userType: String,
+  userHosting: String,
 });
 
 module.exports = mongoose.model('User', userSchema);

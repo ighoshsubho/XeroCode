@@ -1,4 +1,5 @@
 require('dotenv').config();
+const fs = require('fs');
 
 module.exports = {
   mongodbURI: process.env.MONGODB_URI,
@@ -13,5 +14,8 @@ module.exports = {
     clientID: process.env.GITHUB_CLIENT_ID,
     clientSecret: process.env.GITHUB_CLIENT_SECRET,
     callbackURL: 'http://localhost:3000/auth/github/callback', // Update with your callback URL
+    privateKey: process.env.GITHUB_PRIVATE_KEY,
+    appId: process.env.GITHUB_APP_ID,
+    privateKey: fs.readFileSync('private-key.pem', 'utf-8')
   },
 };

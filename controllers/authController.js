@@ -2,6 +2,8 @@ const jwt = require('jsonwebtoken');
 const redis = require('redis');
 const bcrypt = require('bcrypt');
 const User = require('../models/User');
+const { Octokit } = require('@octokit/rest');
+const { createAppAuth } = require('@octokit/auth-app');
 const keys = require('../config/keys');
 const passport = require('passport');
 
@@ -21,6 +23,68 @@ const selectType = async (req, res) => {
     return res.status(500).json({ message: 'Internal server error' });
   }
 }
+
+const selectHosting = async (req, res) => {
+  const { user1, userHosting } = req.body;
+  try{
+    const existingUser = await User.findOne({ _id: user1 });
+    if (!existingUser) {
+      return res.status(401).json({ message: 'Invalid credentials' });
+    }
+    existingUser.userType = userHosting;
+    await existingUser.save();
+    return res.status(200).json({ message: 'User hosting saved successfully' });
+  }
+  catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: 'Internal server error' });
+  }
+}
+
+const fetchRepo = async (req, res) => {
+  const { user1 } = req.body;
+  try {
+    // Create an Octokit instance with the dynamic import of fetch
+    let dynamicFetch;
+    (async () => {
+      const fetchModule = await import('node-fetch');
+      dynamicFetch = fetchModule.default;
+
+      const jwtToken = jwt.sign({}, keys.github.privateKey, {
+        algorithm: 'RS256',
+        expiresIn: '1m', // Set an appropriate expiration
+        issuer: keys.github.appId, // Replace with your GitHub App's app ID
+      });
+
+      const octokit = new Octokit({
+        auth: jwtToken, // Replace with your GitHub App's client ID
+        request: {
+          fetch: dynamicFetch, // Provide the dynamic fetch implementation
+        },
+      });
+
+      // Use the octokit instance to make requests
+      try {
+        const response = await octokit.request('GET /users/{username}/installation', {
+          username: user1,
+          headers: {
+            'X-GitHub-Api-Version': '2022-11-28'
+          }
+        });
+
+        // Response data is already parsed JSON, no need for additional parsing
+        console.log(response.data);
+        return res.status(200).json({ response: response.data });
+      } catch (error) {
+        console.log(error);
+        return res.status(500).json({ message: 'Error fetching repository data' });
+      }
+    })();
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: 'Internal server error' });
+  }
+};
 
 const signup = async (req, res) => {
   const { email, password } = req.body;
@@ -144,4 +208,6 @@ module.exports = {
   githubAuthCallback,
   validateToken,
   selectType,
+  selectHosting,
+  fetchRepo
 };

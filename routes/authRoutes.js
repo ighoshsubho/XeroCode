@@ -25,6 +25,12 @@ router.get('/auth/github/callback', authController.githubAuthCallback);
 router.post('/auth/validate', authController.validateToken);
 
 // route for selecting user type
-router.post('/auth/select', authController.selectType); 
+router.post('/type/select', authController.selectType); 
+
+// route for selecting user hosting
+router.post('/type/hosting', authController.selectHosting);
+
+// route for fetching user repositories
+router.post('/type/repo', authController.fetchRepo);
 
 module.exports = router;
